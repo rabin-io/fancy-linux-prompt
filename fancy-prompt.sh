@@ -1,11 +1,29 @@
 #!/usr/bin/env bash
 
+__generate_number() {
+    hash=$(hostname -f | md5sum | tr -cd '[:digit:]')
+    number=$((hash % 10))
+    echo "${number}"
+}
+
 __powerline() {
     # Unicode symbols
     readonly GIT_BRANCH_CHANGED_SYMBOL='+'
     readonly GIT_NEED_PULL_SYMBOL='⇣'
     readonly GIT_NEED_PUSH_SYMBOL='⇡'
-    readonly PS_SYMBOL='🐧'
+    readonly PS_SYMBOLS=(
+        '👾'
+        '🐧'
+        '🤬'
+        '🤣'
+        '😈'
+        '💀'
+        '👻'
+        '🤖'
+        '💩'
+        )
+    local generated_number=$(__generate_number)
+    readonly PS_SYMBOL=${PS_SYMBOLS[${generated_number}]}
 
     # Solarized colorscheme
     readonly BG_BASE00="\\[$(tput setab 11)\\]"
@@ -104,11 +122,12 @@ __powerline() {
         fi
 
         PS1="$FG_COLOR1"
-        PS1+="$BG_COLOR5 \\w "
-        PS1+="$RESET${FG_COLOR6}"
+        PS1+="${BG_COLOR5} \\H:"
+        PS1+="${BG_COLOR7}\\w "
+        PS1+="${RESET}${FG_COLOR6}"
         PS1+="$(__git_info)"
-        PS1+="$BG_EXIT$RESET"
-        PS1+="$BG_EXIT$FG_BASE3 ${PS_SYMBOL} ${RESET}${FG_EXIT}${RESET} "
+        PS1+="${BG_EXIT}${RESET}"
+        PS1+="${BG_EXIT}${FG_BASE3} ${PS_SYMBOL} ${RESET}${FG_EXIT}${RESET} "
     }
 
     PROMPT_COMMAND=ps1
