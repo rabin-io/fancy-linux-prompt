@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 __generate_number() {
-    hash=$(hostname -f | md5sum | tr -cd '[:digit:]')
+    hash=$(hostname -f | md5sum | tr -cd '[:digit:]' | grep -Eo "[0-9]{,3}" | head -1)
     number=$((hash % 10))
     echo "${number}"
 }
