@@ -2,7 +2,7 @@
 
 __generate_number() {
     hash=$(hostname -f | md5sum | tr -cd '[:digit:]' | grep -Eo "[0-9]{,3}" | head -1)
-    number=$((hash % 10))
+    number=$((hash % ${1:-10}))
     echo "${number}"
 }
 
@@ -12,17 +12,13 @@ __powerline() {
     readonly GIT_NEED_PULL_SYMBOL='⇣'
     readonly GIT_NEED_PUSH_SYMBOL='⇡'
     readonly PS_SYMBOLS=(
-        '👾'
-        '🐧'
-        '🤬'
-        '🤣'
-        '😈'
-        '💀'
-        '👻'
-        '🤖'
-        '💩'
-        )
-    local generated_number=$(__generate_number)
+    ‼ ☀ ☕ ☹ ☺ ♥ ⚡ ✅ ✌ ✨ ❗ ❣ ❤ ⭐ 🌈 🌙 🌞 🌟 🌷 🌸 🌹 🌺 🌻 🍀 🍻 🎁 🎂 🎈 🎉 🎊 🎶 🏃 🐰 👀
+    👁 👇 👈 👉 👊 👋 👌 👍 👏 👑 💀 💃 💋 💐 💓 💔 💕 💖 💗 💘 💙 💚 💛 💜 💝 💞 💤 💥 💦 💩 💪 💯 💰
+    🔥 🔴 🖕 🖤 🤔 🤗 🤘 🤙 🤝 🤞 🤠 🤢 🤣 🤤 🤦 🤨 🤩 🤪 🤬 🤭 🤮 🤯 🤷 🥰 🥳 🥴 🥵 🥺 🦋 🧐 😀 😁 😂 😃
+    😄 😅 😆 😇 😈 😉 😊 😋 😌 😍 😎 😏 😐 😑 😒 😓 😔 😕 😘 😚 😛 😜 😝 😞 😟 😠 😡 😢 😣 😤 😥 😩 😫 😬
+    😭 😱 😲 😳 😴 😹 😻 🙂 🙃 🙄 🙈 🙊 🙋 🙌 🙏 
+    )
+    local generated_number=$(__generate_number ${#PS_SYMBOLS[@]})
     readonly PS_SYMBOL=${PS_SYMBOLS[${generated_number}]}
 
     # Solarized colorscheme
@@ -82,7 +78,7 @@ __powerline() {
 
     __git_info() {
         # no .git directory
-    	[ -d .git ] || return
+        [ -d .git ] || return
 
         local aheadN
         local behindN
